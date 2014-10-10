@@ -25,6 +25,6 @@ power <- getdata()
 png('plot1.png', 480, 480)
 ## Plot histogram
 hist(power$Global_active_power, main = 'Global Active Power', 
-     xlab = 'Global Active Power (kilowatts)', col = 'red')
+     xlab = 'Global Active Power (kilowatts)', col = 'red', plot = TRUE)
 # close device
 dev.off()
