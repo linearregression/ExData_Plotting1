@@ -12,10 +12,10 @@ getdata <- function() {
 }
 
 filterdata <-function() {
-    targetfile<-'household_power_consumption.txt'
+    targetfile<-'./household_power_consumption.txt'
     #only read the required columne
-    sql <- "SELECT Global_active_power FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
-    ret<-read.csv2.sql( file=targetfile, sql=sql, header=TRUE, sep=';', ) 
+    query <- "SELECT Date, Global_active_power FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
+    ret<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';') 
     sqldf() 
     return(ret) 
 }
