@@ -29,23 +29,22 @@ png('plot4.png', 480, 480)
 par(mfrow=c(2,2))
 
 ## construct proper time as x-axis
-timeseries<-strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S")
-power<-power[DateTime=timeseries,]
-## Plot histogram
-with(power, {
-       plot(x=DateTime, y=Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab=''})
+power$DateTime<-strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S")
 
+## global Active Power
+with(power, 
+       plot(x=DateTime, y=Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab='')
+)
 
 ## Voltage plot
-with(power, {
-      plot(x=timeseries, y=Voltage, type='l', ylab = 'Voltage', xlab='datetime')
-   }
+with(power, 
+      plot(x=DateTime, y=Voltage, type='l', ylab = 'Voltage', xlab='datetime')
 )
 
 
 ## Submeter power consumption plot
 with(power, {
-      plot(x=timeseries, y=Sub_metering_1, type='l', ylab = 'Energy sub metering', xlab='')
+      plot(x=DateTime, y=Sub_metering_1, type='l', ylab = 'Energy sub metering', xlab='')
       lines(x=timeseries, y=Sub_metering_2, col='red')
       lines(x=timeseries, y=Sub_metering_3, col='blue')
    }
@@ -54,7 +53,7 @@ legend("topright", lty=1, title='', legend=c("Sub_metering_1","Sub_metering_2","
 
 ## Global Reactive power plot
 with(power, {
-      plot(x=timeseries, y=Global_reactive_power, type='l', ylab = 'Global_reactive_power', xlab='datetime')
+      plot(x=DateTime, y=Global_reactive_power, type='l', ylab = 'Global_reactive_power', xlab='datetime')
    }
 )
 
