@@ -34,9 +34,7 @@ power<-power[DateTime=timeseries,]
 ## Plot histogram
 with(power, {
        plot(x=DateTime, y=Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab=''})
-legend<-c("Sub_metering_1","Sub_metering_2","Sub_metering_3")
-legend("topright", inset=.05, title='',
-  	legend=legend, col = par("col"))
+
 
 ## Voltage plot
 with(power, {
