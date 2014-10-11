@@ -25,10 +25,9 @@ Sys.setlocale(locale = "C")
 ## Create a png device
 png('plot2.png', 480, 480)
 ## construct proper time as x-axis
-
+timeseries<-strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S")
 ## Plot histogram
-plot(power$Date, power$Global_active_power, 
-     ylab = 'Global Active Power (kilowatts)')
+plot(x=timeseries, y=power$Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab='')
 
 # close device
 dev.off()
