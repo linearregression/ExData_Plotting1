@@ -14,7 +14,7 @@ filterdata <-function() {
     require(sqldf)
     targetfile<-'./household_power_consumption.txt'
     #only read the required columne
-    query <- "SELECT Date, Time, Global_active_power FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
+    query <- "SELECT Date, Time, Sub_metering_1, Sub_metering_2, Sub_metering_3 FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
     ret<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';')
     sqldf() 
     return(ret) 
@@ -26,10 +26,11 @@ Sys.setlocale(locale = "C")
 png('plot2.png', 480, 480)
 ## construct proper time as x-axis
 timeseries<-strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S")
-power<-transform(power, Date=strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S"))
 ## Plot histogram
-plot(x=power$Date, y=power$Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab='')
-
+plot(x=timeseries, y=power$Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab='')
+legend<-c("Sub_metering_1","Sub_metering_2","Sub_metering_3")
+legend("topright", inset=.05, title='',
+  	legend=legend, col = par("col"))
 # close device
 dev.off()
 rm(list=ls())
