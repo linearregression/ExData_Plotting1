@@ -1,3 +1,4 @@
+rm(list=ls()) #clear off alll R objects for more memory
 getdata <- function() {
     # Download and prep data file is absent
     if(!file.exists('household_power_consumption.txt')) {
@@ -13,24 +14,27 @@ getdata <- function() {
 filterdata <-function() {
     require(sqldf)
     targetfile<-'./household_power_consumption.txt'
-    #only read the required columne
+    #read the required columns
     query <- "SELECT Date, Time, Sub_metering_1, Sub_metering_2, Sub_metering_3 FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
-    ret<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';')
-    sqldf() 
-    return(ret) 
+    power<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';')
+    sqldf() #close off sqldf con
+    return(power) 
 }
 
 power <- getdata()
 Sys.setlocale(locale = "C")
 ## Create a png device
-png('plot2.png', 480, 480)
+png('plot3.png', 480, 480)
 ## construct proper time as x-axis
 timeseries<-strptime(paste(power$Date, power$Time), format="%d/%m/%Y %H:%M:%S")
-## Plot histogram
-plot(x=timeseries, y=power$Global_active_power, type='l', ylab = 'Global Active Power (kilowatts)', xlab='')
-legend<-c("Sub_metering_1","Sub_metering_2","Sub_metering_3")
-legend("topright", inset=.05, title='',
-  	legend=legend, col = par("col"))
+## Plot energy consumption per meters
+with(power, {
+      plot(x=timeseries, y=Sub_metering_1, type='l', ylab = 'Energy sub metering', xlab='')
+      lines(x=timeseries, y=Sub_metering_2, col='red')
+      lines(x=timeseries, y=Sub_metering_3, col='blue')
+   }
+)
+legend("topright", lty=1, title='', legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), col = c('black','red','blue'))
 # close device
 dev.off()
 rm(list=ls())
