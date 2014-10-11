@@ -1,4 +1,3 @@
-require(sqldf)
 getdata <- function() {
     # Download and prep data file is absent
     if(!file.exists('household_power_consumption.txt')) {
@@ -12,19 +11,25 @@ getdata <- function() {
 }
 
 filterdata <-function() {
+    require(sqldf)
     targetfile<-'./household_power_consumption.txt'
     #only read the required columne
-    query <- "SELECT Date, Global_active_power FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
-    ret<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';') 
+    query <- "SELECT Date, Time, Global_active_power FROM file WHERE Date = '1/2/2007' OR Date = '2/2/2007' "
+    ret<-read.csv2.sql( file=targetfile, sql=query, header=TRUE, sep=';')
     sqldf() 
     return(ret) 
 }
 
 power <- getdata()
+Sys.setlocale(locale = "C")
 ## Create a png device
 png('plot2.png', 480, 480)
+## construct proper time as x-axis
+
 ## Plot histogram
-hist(power$Global_active_power, main = 'Global Active Power', 
-     xlab = 'Global Active Power (kilowatts)', col = 'red', plot=TRUE)
+plot(power$Date, power$Global_active_power, 
+     ylab = 'Global Active Power (kilowatts)')
+
 # close device
 dev.off()
+rm(list=ls())
